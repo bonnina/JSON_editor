@@ -8,7 +8,7 @@ namespace JSON_editor
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Enter path to sourse file: ");
+            Console.WriteLine("Enter path to source file: ");
             string filePath = Console.ReadLine();
 
             Console.WriteLine("\nEnter path to translations file: ");
