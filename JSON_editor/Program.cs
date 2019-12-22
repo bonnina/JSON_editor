@@ -21,7 +21,7 @@ namespace JSON_editor
         public static void UpdateJsonFile(string filePath, string translationsPath)
         {
 
-            string writeResult = string.Empty;
+            string result = string.Empty;
 
             using (StreamReader fr = new StreamReader(filePath))
             {
@@ -48,11 +48,10 @@ namespace JSON_editor
                     }
                 }
 
-                writeResult = file_contents.ToString();
-
-                Console.WriteLine(writeResult);
-                
+                result = file_contents.ToString();
             }
+
+            File.WriteAllText(filePath, result);
         }
     }
 }
