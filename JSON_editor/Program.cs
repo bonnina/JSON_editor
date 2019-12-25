@@ -6,7 +6,7 @@ namespace JSON_editor
 {
     class Program
     {
-        static void Main(string[] args)
+        static void Main()
         {
             Console.WriteLine("Enter path to source file: ");
             string filePath = Console.ReadLine();
@@ -25,20 +25,20 @@ namespace JSON_editor
 
             using (StreamReader fr = new StreamReader(filePath))
             {
-                var file_json = fr.ReadToEnd();
-                var file_contents = JObject.Parse(file_json);
+                var fileJson = fr.ReadToEnd();
+                var fileContents = JObject.Parse(fileJson);
 
                 using (StreamReader tr = new StreamReader(translationsPath))
                 {
-                    var transl_json = tr.ReadToEnd();
-                    var transl_contents = JObject.Parse(transl_json);
+                    var translJson = tr.ReadToEnd();
+                    var translContents = JObject.Parse(translJson);
 
-                    foreach (var translation in transl_contents.Properties())
+                    foreach (var translation in translContents.Properties())
                     {
                         string english = translation.Value.SelectToken("ENG").Value<string>();
                         string german = translation.Value.SelectToken("GER").Value<string>();
 
-                        foreach (var item in file_contents.Properties())
+                        foreach (var item in fileContents.Properties())
                         {
                             if (!String.IsNullOrEmpty(english) && !String.IsNullOrEmpty(german))
                             {
@@ -48,7 +48,7 @@ namespace JSON_editor
                     }
                 }
 
-                result = file_contents.ToString();
+                result = fileContents.ToString();
             }
 
             File.WriteAllText(filePath, result);
@@ -58,8 +58,9 @@ namespace JSON_editor
 
 //var file_contents = JObject.Parse(
 //    @"{
-//        '0': 'English',
-//        '1': 'user'
+//        '0': 'language',
+//        '1': 'user',
+//        '2': 'save'
 //    }"
 //);
 
