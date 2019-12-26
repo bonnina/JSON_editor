@@ -40,7 +40,10 @@ namespace JSON_editor
 
                         foreach (var item in fileContents.Properties())
                         {
-                            if (!String.IsNullOrEmpty(english) && !String.IsNullOrEmpty(german))
+                            var currentValue = item.Value.ToString();
+                            bool canUpdate = CanUpdate(english, german, currentValue);
+
+                            if (canUpdate)
                             {
                                 item.Value = item.Value.ToString().Replace(english, german);
                             }
@@ -52,6 +55,13 @@ namespace JSON_editor
             }
 
             File.WriteAllText(filePath, result);
+        }
+
+        public static bool CanUpdate(string english, string german, string val)
+        {
+            return !String.IsNullOrEmpty(english)
+                && !String.IsNullOrEmpty(german)
+                && val.ToString() == english;
         }
     }
 }
