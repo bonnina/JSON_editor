@@ -45,7 +45,7 @@ namespace JSON_editor
 
                             if (canUpdate)
                             {
-                                item.Value = item.Value.ToString().Replace(english, german);
+                                item.Value = currentValue.Replace(english, german);
                             }
                         }
                     }
