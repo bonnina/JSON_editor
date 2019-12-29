@@ -20,33 +20,30 @@ namespace JSON_editor
 
         public static void UpdateJsonFile(string filePath, string translationsPath)
         {
-
             string result = string.Empty;
 
-            using (StreamReader fr = new StreamReader(filePath))
+            if (File.Exists(filePath) && File.Exists(translationsPath))
             {
-                var fileJson = fr.ReadToEnd();
+                var fileJson = File.ReadAllText(filePath);
                 var fileContents = JObject.Parse(fileJson);
 
-                using (StreamReader tr = new StreamReader(translationsPath))
+                
+                var translJson = File.ReadAllText(translationsPath);
+                var translContents = JObject.Parse(translJson);
+
+                foreach (var translation in translContents.Properties())
                 {
-                    var translJson = tr.ReadToEnd();
-                    var translContents = JObject.Parse(translJson);
+                    string english = translation.Value.SelectToken("ENG").Value<string>();
+                    string german = translation.Value.SelectToken("GER").Value<string>();
 
-                    foreach (var translation in translContents.Properties())
+                    foreach (var item in fileContents.Properties())
                     {
-                        string english = translation.Value.SelectToken("ENG").Value<string>();
-                        string german = translation.Value.SelectToken("GER").Value<string>();
+                        var currentValue = item.Value.ToString();
+                        bool canUpdate = CanUpdate(english, german, currentValue);
 
-                        foreach (var item in fileContents.Properties())
+                        if (canUpdate)
                         {
-                            var currentValue = item.Value.ToString();
-                            bool canUpdate = CanUpdate(english, german, currentValue);
-
-                            if (canUpdate)
-                            {
-                                item.Value = currentValue.Replace(english, german);
-                            }
+                            item.Value = currentValue.Replace(english, german);
                         }
                     }
                 }
